@@ -1,0 +1,51 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">我的自选股</text>
+    <view class="header-btns">
+      <view class="user-avatar" wx:if="{{userInfo}}" bindtap="showUserInfo">
+        <image class="avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      </view>
+      <button
+        class="subscribe-btn {{isSubscribed ? 'subscribed' : ''}}"
+        bindtap="subscribeMessage">
+        {{isSubscribed ? '已订阅' : '订阅提醒'}}
+      </button>
+      <button class="refresh-btn" bindtap="refreshStocks">刷新</button>
+    </view>
+  </view>
+
+  <scroll-view
+    class="stock-list"
+    wx:if="{{stocks.length > 0}}"
+    scroll-y="true"
+    bindscrolltolower="loadMoreStocks"
+    lower-threshold="100"
+    enable-back-to-top="true">
+
+    <view class="stock-item" wx:for="{{stocks}}" wx:key="_id" bindtap="editStock" data-id="{{item._id}}">
+      <view class="stock-left">
+        <text class="stock-name">{{item.name}}</text>
+        <text class="stock-code">{{item.code}}</text>
+      </view>
+      <view class="stock-right">
+        <text class="stock-price {{item.change >= 0 ? 'up' : 'down'}}">{{item.price}}</text>
+        <text class="stock-change {{item.change >= 0 ? 'up' : 'down'}}">
+          {{item.change >= 0 ? '+' : ''}}{{item.changePercent}}
+        </text>
+      </view>
+    </view>
+
+    <view class="loading-more" wx:if="{{hasMore && loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore}}">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">📊</text>
+    <text class="empty-text">暂无自选股，请添加</text>
+  </view>
+</view>

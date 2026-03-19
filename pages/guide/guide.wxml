@@ -1,0 +1,61 @@
+<!--pages/guide/guide.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">股票监测</text>
+  </view>
+
+  <view class="content">
+    <view class="intro-card">
+      <view class="intro-icon">📊</view>
+      <text class="intro-title">欢迎使用股票监测小程序</text>
+      <text class="intro-desc">您可以先体验功能，登录后享受更多服务</text>
+    </view>
+
+    <view class="feature-list">
+      <view class="feature-item">
+        <view class="feature-icon">📈</view>
+        <view class="feature-content">
+          <text class="feature-title">实时行情</text>
+          <text class="feature-desc">查看股票实时价格和涨跌幅</text>
+        </view>
+      </view>
+      <view class="feature-item">
+        <view class="feature-icon">🔔</view>
+        <view class="feature-content">
+          <text class="feature-title">价格提醒</text>
+          <text class="feature-desc">设置价格阈值，智能提醒</text>
+        </view>
+      </view>
+      <view class="feature-item">
+        <view class="feature-icon">⭐</view>
+        <view class="feature-content">
+          <text class="feature-title">自选股管理</text>
+          <text class="feature-desc">添加和管理您关注的股票</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="sample-section">
+      <text class="section-title">股票行情示例</text>
+      <view class="sample-list">
+        <view class="sample-item" wx:for="{{stocks}}" wx:key="_id">
+          <view class="sample-left">
+            <text class="stock-name">{{item.name}}</text>
+            <text class="stock-code">{{item.code}}</text>
+          </view>
+          <view class="sample-right">
+            <text class="stock-price {{item.change >= 0 ? 'up' : 'down'}}">{{item.price}}</text>
+            <text class="stock-change {{item.change >= 0 ? 'up' : 'down'}}">
+              {{item.change >= 0 ? '+' : ''}}{{item.changePercent}}
+            </text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="button-group">
+      <button class="login-btn" bindtap="goToLogin">立即登录</button>
+      <button class="explore-btn" bindtap="goToIndex">继续浏览</button>
+    </view>
+  </view>
+</view>
