@@ -13,20 +13,7 @@ Page({
   },
 
   onLoad: function (options) {
-    // 检查用户登录状态
-    if (!app.checkLogin()) {
-      wx.showModal({
-        title: '提示',
-        content: '请先登录',
-        showCancel: false,
-        success: function() {
-          wx.switchTab({
-            url: '/pages/index/index'
-          })
-        }
-      })
-      return
-    }
+    // 不再强制登录，允许未登录用户搜索股票
   },
 
   // 输入股票代码
@@ -180,6 +167,23 @@ Page({
 
   // 添加股票
   addStock: function() {
+    // 检查用户登录状态
+    if (!app.checkLogin()) {
+      wx.showModal({
+        title: '提示',
+        content: '添加自选股需要登录',
+        confirmText: '去登录',
+        success: function(res) {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '/pages/login/login'
+            })
+          }
+        }
+      })
+      return
+    }
+
     const { code, buyThreshold, sellThreshold, remark } = this.data
 
     // 表单验证 - 只校验股票代码必填

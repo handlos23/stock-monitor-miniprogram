@@ -1,8 +1,20 @@
 <!--pages/index/index.wxml-->
 <view class="container">
+  <!-- 未登录提示 -->
+  <view class="login-tip" wx:if="{{!userInfo}}">
+    <text class="tip-text">登录后可添加自选股、设置价格阈值并接收提醒</text>
+    <button class="login-btn" bindtap="goToLogin">立即登录</button>
+  </view>
+
   <view class="header">
-    <text class="title">我的自选股</text>
+    <text class="title">{{userInfo ? '我的自选股' : '股票行情示例'}}</text>
     <view class="header-btns">
+      <view class="user-avatar" wx:if="{{userInfo}}" bindtap="showUserInfo">
+        <image class="avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      </view>
+      <view class="user-avatar-placeholder" wx:if="{{!userInfo}}" bindtap="goToLogin">
+        <text class="placeholder-icon">👤</text>
+      </view>
       <button 
         class="subscribe-btn {{isSubscribed ? 'subscribed' : ''}}" 
         bindtap="subscribeMessage">

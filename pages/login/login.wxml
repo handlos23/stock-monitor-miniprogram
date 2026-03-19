@@ -7,10 +7,17 @@
     <text class="subtitle">实时监控，智能提醒</text>
   </view>
 
+  <!-- 已登录状态 -->
+  <view class="user-info" wx:if="{{userInfo}}">
+    <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+    <text class="nickname">{{userInfo.nickName}}</text>
+    <text class="login-tip-text">您已登录，可以管理自选股</text>
+  </view>
+
   <view class="content">
     <view class="info-box">
       <text class="info-text">欢迎使用股票监测小程序</text>
-      <text class="info-desc">登录后您可以：</text>
+      <text class="info-desc">您可以先体验功能，登录后享受更多服务：</text>
       <view class="feature-list">
         <view class="feature-item">
           <text class="feature-icon">✓</text>
@@ -28,12 +35,15 @@
     </view>
 
     <view class="button-group">
-      <button class="login-btn" bindtap="getUserInfo">微信登录</button>
-      <button class="register-btn" bindtap="goToRegister">注册账号</button>
+      <button class="login-btn" wx:if="{{!userInfo}}" bindtap="getUserInfo">微信登录</button>
+      <button class="logout-btn" wx:if="{{userInfo}}" bindtap="logout">退出登录</button>
+      <button class="register-btn" wx:if="{{!userInfo}}" bindtap="goToRegister">注册账号</button>
+      <button class="index-btn" wx:if="{{userInfo}}" bindtap="goToIndex">返回首页</button>
     </view>
   </view>
 
   <view class="footer">
     <text class="agreement">登录即表示同意《用户协议》和《隐私政策》</text>
+    <text class="tip-text">您可以先浏览功能，再选择是否登录</text>
   </view>
 </view>

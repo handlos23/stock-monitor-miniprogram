@@ -6,8 +6,9 @@
   align-items: center;
   justify-content: space-between;
   min-height: 100vh;
-  padding: 80rpx 40rpx;
+  padding: 100rpx 40rpx;
   box-sizing: border-box;
+  background: linear-gradient(180deg, #e6f7ff 0%, #ffffff 100%);
 }
 
 .header {
@@ -17,18 +18,51 @@
   margin-top: 40rpx;
 }
 
-.logo {
-  width: 160rpx;
-  height: 160rpx;
-  margin-bottom: 40rpx;
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40rpx 0;
+  padding: 40rpx;
+  background-color: #fff;
   border-radius: 20rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  margin-bottom: 20rpx;
+  border: 4rpx solid #e6f7ff;
+}
+
+.nickname {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.login-tip-text {
+  font-size: 26rpx;
+  color: #8c8c8c;
+}
+
+.logo {
+  width: 180rpx;
+  height: 180rpx;
+  margin-bottom: 40rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(24, 144, 255, 0.2);
 }
 
 .title {
-  font-size: 48rpx;
+  font-size: 52rpx;
   font-weight: bold;
   color: #1890ff;
   margin-bottom: 20rpx;
+  letter-spacing: 2rpx;
 }
 
 .subtitle {
@@ -43,9 +77,9 @@
 
 .info-box {
   background-color: #fff;
-  border-radius: 20rpx;
-  padding: 40rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+  border-radius: 24rpx;
+  padding: 48rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
   margin-bottom: 60rpx;
 }
 
@@ -97,14 +131,42 @@
 
 .login-btn {
   width: 100%;
-  height: 90rpx;
-  line-height: 90rpx;
-  background-color: #1890ff;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
   color: #fff;
-  border-radius: 45rpx;
+  border-radius: 48rpx;
   font-size: 32rpx;
+  font-weight: 500;
   margin-bottom: 30rpx;
   border: none;
+  box-shadow: 0 8rpx 24rpx rgba(24, 144, 255, 0.4);
+}
+
+.logout-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%);
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  margin-bottom: 30rpx;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(255, 77, 79, 0.3);
+}
+
+.index-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: #fff;
+  color: #1890ff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  border: 2rpx solid #1890ff;
 }
 
 .login-btn::after {
@@ -113,12 +175,13 @@
 
 .register-btn {
   width: 100%;
-  height: 90rpx;
-  line-height: 90rpx;
+  height: 96rpx;
+  line-height: 96rpx;
   background-color: #fff;
   color: #1890ff;
-  border-radius: 45rpx;
+  border-radius: 48rpx;
   font-size: 32rpx;
+  font-weight: 500;
   border: 2rpx solid #1890ff;
 }
 
@@ -133,4 +196,14 @@
 .agreement {
   font-size: 24rpx;
   color: #999;
+  display: block;
+  text-align: center;
+  margin-bottom: 12rpx;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: #1890ff;
+  display: block;
+  text-align: center;
 }

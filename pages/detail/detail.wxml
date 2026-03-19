@@ -15,19 +15,19 @@
     <view class="stock-info">
       <view class="info-item">
         <text class="info-label">今开</text>
-        <text>{{stock.open}}</text>
+        <text class="info-value {{stock.open >= stock.yesterdayClose ? 'up' : 'down'}}">{{stock.open}}</text>
       </view>
       <view class="info-item">
         <text class="info-label">最高</text>
-        <text>{{stock.high}}</text>
+        <text class="info-value {{stock.high >= stock.yesterdayClose ? 'up' : 'down'}}">{{stock.high}}</text>
       </view>
       <view class="info-item">
         <text class="info-label">最低</text>
-        <text>{{stock.low}}</text>
+        <text class="info-value {{stock.low >= stock.yesterdayClose ? 'up' : 'down'}}">{{stock.low}}</text>
       </view>
       <view class="info-item">
         <text class="info-label">昨收</text>
-        <text>{{stock.yesterdayClose}}</text>
+        <text class="info-value">{{stock.yesterdayClose}}</text>
       </view>
     </view>
   </view>

@@ -124,28 +124,16 @@ App({
   logout: function(callback) {
     const that = this
 
-    wx.showModal({
-      title: '确认退出',
-      content: '确定要退出登录吗？',
-      success: function(res) {
-        if (res.confirm) {
-          // 清除本地存储
-          wx.removeStorage({
-            key: 'userInfo',
-            success: function() {
-              that.globalData.userInfo = null
-              that.globalData.openid = null
+    // 清除本地存储
+    wx.removeStorage({
+      key: 'userInfo',
+      success: function() {
+        that.globalData.userInfo = null
+        that.globalData.openid = null
 
-              wx.showToast({
-                title: '已退出登录',
-                icon: 'success'
-              })
 
-              if (callback && typeof callback === 'function') {
-                callback()
-              }
-            }
-          })
+        if (callback && typeof callback === 'function') {
+          callback()
         }
       }
     })

@@ -11,8 +11,8 @@ Page({
   onLoad: function (options) {
     // 检查是否已登录
     if (app.checkLogin()) {
-      wx.switchTab({
-        url: '/pages/index/index'
+      this.setData({
+        userInfo: app.globalData.userInfo
       })
     }
   },
@@ -24,6 +24,31 @@ Page({
         wx.switchTab({
           url: '/pages/index/index'
         })
+      }
+    })
+  },
+
+  // 跳转到首页
+  goToIndex: function() {
+    wx.switchTab({
+      url: '/pages/index/index'
+    })
+  },
+
+  // 退出登录
+  logout: function() {
+    const that = this
+    wx.showModal({
+      title: '确认退出',
+      content: '确定要退出登录吗？',
+      success: function(res) {
+        if (res.confirm) {
+          app.logout(function() {
+            that.setData({
+              userInfo: null
+            })
+          })
+        }
       }
     })
   },

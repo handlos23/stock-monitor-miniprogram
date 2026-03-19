@@ -16,46 +16,21 @@ Page({
 
   onLoad: function (options) {
     // 检查用户登录状态
-    if (!app.checkLogin()) {
-      wx.showModal({
-        title: '提示',
-        content: '请先登录',
-        showCancel: false,
-        success: function() {
-          wx.redirectTo({
-            url: '/pages/login/login'
-          })
-        }
+    if (app.checkLogin()) {
+      this.setData({
+        userInfo: app.globalData.userInfo
       })
-      return
+      this.loadStocks()
+      this.checkSubscriptionStatus()
     }
-
-    this.setData({
-      userInfo: app.globalData.userInfo
-    })
-
-    this.loadStocks()
-    this.checkSubscriptionStatus()
   },
 
   onShow: function () {
     // 页面显示时检查登录状态
-    if (!app.checkLogin()) {
-      wx.showModal({
-        title: '提示',
-        content: '请先登录',
-        showCancel: false,
-        success: function() {
-          wx.redirectTo({
-            url: '/pages/login/login'
-          })
-        }
-      })
-      return
+    if (app.checkLogin()) {
+      // 页面显示时刷新股票列表
+      this.loadStocks()
     }
-
-    // 页面显示时刷新股票列表
-    this.loadStocks()
   },
 
   // 加载股票列表
@@ -259,6 +234,44 @@ Page({
       // 这里可以添加订阅消息的代码
       // wx.requestSubscribeMessage({...})
     }
+  },
+
+  // 显示用户信息
+  showUserInfo: function() {
+    const that = this
+    wx.showActionSheet({
+      itemList: ['个人中心', '退出登录'],
+      success: function(res) {
+        if (res.tapIndex === 0) {
+          // 跳转到登录页面
+          wx.navigateTo({
+            url: '/pages/login/login'
+          })
+        } else if (res.tapIndex === 1) {
+          // 退出登录
+          that.logout()
+        }
+      }
+    })
+  },
+
+  // 退出登录
+  logout: function() {
+    const that = this
+    wx.showModal({
+      title: '确认退出',
+      content: '确定要退出登录吗？',
+      success: function(res) {
+        if (res.confirm) {
+          app.logout(function() {
+            that.setData({
+              userInfo: null,
+              stocks: []
+            })
+          })
+        }
+      }
+    })
   },
 
   // 刷新股票行情
