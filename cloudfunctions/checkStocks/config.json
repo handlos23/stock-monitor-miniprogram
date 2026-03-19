@@ -1,0 +1,14 @@
+{
+  "triggers": [
+    {
+      "name": "checkStocksTimer",
+      "type": "timer",
+      "config": "*/10 * 9-14 * * 1-5"
+    },
+    {
+      "name": "checkStocksTimer2",
+      "type": "timer",
+      "config": "*/10 * 15 * * 1-5"
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+/* pages/index/index.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 30rpx 20rpx;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.header-btns {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.subscribe-btn {
+  background-color: #52c41a;
+  color: #fff;
+  font-size: 26rpx;
+  padding: 10rpx 30rpx;
+  border-radius: 30rpx;
+  line-height: 1.8;
+  height: auto;
+  box-shadow: 0 4rpx 12rpx rgba(82, 196, 26, 0.3);
+  transition: all 0.3s;
+}
+
+.subscribe-btn.subscribed {
+  background-color: #d9d9d9;
+  color: #8c8c8c;
+  box-shadow: none;
+}
+
+.refresh-btn {
+  background-color: #1890ff;
+  color: #fff;
+  font-size: 26rpx;
+  padding: 10rpx 30rpx;
+  border-radius: 30rpx;
+  line-height: 1.8;
+  height: auto;
+  box-shadow: 0 4rpx 12rpx rgba(24, 144, 255, 0.3);
+}
+
+.stock-list {
+  height: calc(100vh - 120rpx);
+  padding: 0 30rpx 30rpx;
+}
+
+.stock-card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  transition: all 0.3s;
+}
+
+.stock-card:active {
+  transform: scale(0.98);
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.stock-basic {
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 8rpx;
+}
+
+.stock-code {
+  font-size: 24rpx;
+  color: #8c8c8c;
+}
+
+.stock-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.stock-price {
+  font-size: 40rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.stock-price.up {
+  color: #ff4d4f;
+}
+
+.stock-price.down {
+  color: #52c41a;
+}
+
+.stock-change {
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.stock-change.up {
+  color: #ff4d4f;
+}
+
+.stock-change.down {
+  color: #52c41a;
+}
+
+.stock-info {
+  margin-bottom: 20rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.info-label {
+  font-size: 22rpx;
+  color: #8c8c8c;
+  margin-bottom: 8rpx;
+}
+
+.info-value {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.info-value.up {
+  color: #ff4d4f;
+}
+
+.info-value.down {
+  color: #52c41a;
+}
+
+.threshold-info {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.threshold-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.threshold-label {
+  font-size: 22rpx;
+  color: #8c8c8c;
+  margin-bottom: 8rpx;
+}
+
+.threshold-value {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.threshold-value.buy {
+  color: #1890ff;
+}
+
+.threshold-value.sell {
+  color: #ff4d4f;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.btn {
+  padding: 12rpx 32rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  line-height: 1.8;
+  height: auto;
+  margin-left: 20rpx;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: #fff;
+  color: #ff4d4f;
+  border: 1rpx solid #ff4d4f;
+}
+
+.loading-more,
+.no-more {
+  text-align: center;
+  padding: 30rpx 0;
+  color: #8c8c8c;
+  font-size: 26rpx;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #8c8c8c;
+}

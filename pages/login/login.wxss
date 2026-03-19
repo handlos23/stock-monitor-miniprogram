@@ -1,0 +1,136 @@
+
+/* pages/login/login.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 80rpx 40rpx;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40rpx;
+}
+
+.logo {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: 40rpx;
+  border-radius: 20rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #1890ff;
+  margin-bottom: 20rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.content {
+  width: 100%;
+  margin-top: 60rpx;
+}
+
+.info-box {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+  margin-bottom: 60rpx;
+}
+
+.info-text {
+  display: block;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.info-desc {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 30rpx;
+}
+
+.feature-list {
+  margin-top: 30rpx;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.feature-icon {
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #e6f7ff;
+  color: #1890ff;
+  margin-right: 20rpx;
+  font-size: 24rpx;
+}
+
+.feature-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.button-group {
+  width: 100%;
+}
+
+.login-btn {
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  background-color: #1890ff;
+  color: #fff;
+  border-radius: 45rpx;
+  font-size: 32rpx;
+  margin-bottom: 30rpx;
+  border: none;
+}
+
+.login-btn::after {
+  border: none;
+}
+
+.register-btn {
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  background-color: #fff;
+  color: #1890ff;
+  border-radius: 45rpx;
+  font-size: 32rpx;
+  border: 2rpx solid #1890ff;
+}
+
+.register-btn::after {
+  border: none;
+}
+
+.footer {
+  margin-bottom: 40rpx;
+}
+
+.agreement {
+  font-size: 24rpx;
+  color: #999;
+}

@@ -1,0 +1,162 @@
+/**app.wxss**/
+page {
+  background-color: #f6f6f6;
+  font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 20rpx;
+}
+
+.stock-card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.stock-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.stock-code {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 12rpx;
+}
+
+.stock-price {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.stock-change {
+  font-size: 28rpx;
+  margin-left: 12rpx;
+}
+
+.stock-change.up {
+  color: #e74c3c;
+}
+
+.stock-change.down {
+  color: #2ecc71;
+}
+
+.stock-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-label {
+  font-size: 22rpx;
+  color: #999;
+  margin-bottom: 6rpx;
+}
+
+.btn-group {
+  display: flex;
+  margin-top: 20rpx;
+}
+
+.btn {
+  flex: 1;
+  margin-right: 16rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+}
+
+.btn:last-child {
+  margin-right: 0;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: #f5222d;
+  color: #fff;
+}
+
+.btn-default {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  background-color: #fff;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 150rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  background-color: #fff;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+}

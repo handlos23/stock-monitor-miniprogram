@@ -1,0 +1,124 @@
+/* pages/detail/detail.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f6f6f6;
+  padding: 30rpx;
+}
+
+.stock-card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.stock-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.stock-code {
+  font-size: 26rpx;
+  color: #999;
+  margin-left: 12rpx;
+}
+
+.stock-price {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.stock-change {
+  font-size: 30rpx;
+  margin-left: 12rpx;
+}
+
+.stock-change.up {
+  color: #e74c3c;
+}
+
+.stock-change.down {
+  color: #2ecc71;
+}
+
+.stock-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-label {
+  font-size: 22rpx;
+  color: #999;
+  margin-bottom: 6rpx;
+}
+
+.threshold-container {
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 150rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: #fff;
+}

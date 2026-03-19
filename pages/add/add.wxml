@@ -1,0 +1,51 @@
+<!--pages/add/add.wxml-->
+<view class="container">
+  <view class="form-container">
+    <view class="form-item">
+      <text class="form-label">股票代码</text>
+      <input class="form-input" placeholder="请输入6位股票代码" type="number" maxlength="6" bindinput="onCodeInput" value="{{code}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">股票名称</text>
+      <input class="form-input" placeholder="保存时自动获取" disabled value="{{name}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">买入阈值（可选）</text>
+      <input class="form-input" placeholder="请输入买入价格" type="digit" bindinput="onBuyThresholdInput" value="{{buyThreshold}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">卖出阈值（可选）</text>
+      <input class="form-input" placeholder="请输入卖出价格" type="digit" bindinput="onSellThresholdInput" value="{{sellThreshold}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">备注（可选）</text>
+      <textarea class="form-textarea" placeholder="请输入备注信息" bindinput="onRemarkInput" value="{{remark}}"/>
+    </view>
+
+    <button class="btn btn-primary" bindtap="addStock">添加股票</button>
+  </view>
+
+  <view class="search-result" wx:if="{{searchResult}}">
+    <view class="result-card">
+      <view class="result-header">
+        <text class="result-name">{{searchResult.name}}</text>
+        <text class="result-code">{{searchResult.code}}</text>
+      </view>
+      <view class="result-info">
+        <view class="info-item">
+          <text class="info-label">当前价格</text>
+          <text class="info-value">{{searchResult.price}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">涨跌幅</text>
+          <text class="info-value {{searchResult.change >= 0 ? 'up' : 'down'}}">{{searchResult.changePercent}}</text>
+        </view>
+      </view>
+      <button class="btn btn-primary" bindtap="useSearchResult">使用此股票</button>
+    </view>
+  </view>
+</view>

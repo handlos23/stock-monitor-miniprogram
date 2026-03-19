@@ -1,0 +1,88 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">我的自选股</text>
+    <view class="header-btns">
+      <button 
+        class="subscribe-btn {{isSubscribed ? 'subscribed' : ''}}" 
+        bindtap="subscribeMessage">
+        {{isSubscribed ? '已订阅' : '订阅提醒'}}
+      </button>
+      <button class="refresh-btn" bindtap="refreshStocks">刷新</button>
+    </view>
+  </view>
+
+  <scroll-view 
+    class="stock-list" 
+    wx:if="{{stocks.length > 0}}"
+    scroll-y="true"
+    bindscrolltolower="loadMoreStocks"
+    lower-threshold="100"
+    enable-back-to-top="true">
+
+    <view class="stock-card" wx:for="{{stocks}}" wx:key="_id" bindtap="editStock" data-id="{{item._id}}">
+      <view class="stock-header">
+        <view class="stock-basic">
+          <text class="stock-name">{{item.name}}</text>
+          <text class="stock-code">{{item.code}}</text>
+        </view>
+        <view class="stock-price-container">
+          <text class="stock-price {{item.change >= 0 ? 'up' : 'down'}}">{{item.price}}</text>
+          <text class="stock-change {{item.change >= 0 ? 'up' : 'down'}}">
+            {{item.change >= 0 ? '+' : ''}}{{item.changePercent}}
+          </text>
+        </view>
+      </view>
+
+      <view class="stock-info">
+        <view class="info-row">
+          <view class="info-item">
+            <text class="info-label">今开</text>
+            <text class="info-value {{item.open >= item.yesterdayClose ? 'up' : 'down'}}">{{item.open}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">最高</text>
+            <text class="info-value {{item.high >= item.yesterdayClose ? 'up' : 'down'}}">{{item.high}}</text>
+          </view>
+        </view>
+        <view class="info-row">
+          <view class="info-item">
+            <text class="info-label">最低</text>
+            <text class="info-value {{item.low >= item.yesterdayClose ? 'up' : 'down'}}">{{item.low}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">昨收</text>
+            <text class="info-value">{{item.yesterdayClose}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="threshold-info" wx:if="{{item.buyThreshold || item.sellThreshold}}">
+        <view class="threshold-item" wx:if="{{item.buyThreshold}}">
+          <text class="threshold-label">买入阈值:</text>
+          <text class="threshold-value buy">{{item.buyThreshold}}</text>
+        </view>
+        <view class="threshold-item" wx:if="{{item.sellThreshold}}">
+          <text class="threshold-label">卖出阈值:</text>
+          <text class="threshold-value sell">{{item.sellThreshold}}</text>
+        </view>
+      </view>
+
+      <view class="btn-group">
+        <button class="btn btn-danger" catchtap="deleteStock" data-id="{{item._id}}">删除</button>
+      </view>
+    </view>
+
+    <view class="loading-more" wx:if="{{hasMore && loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore}}">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">📊</text>
+    <text class="empty-text">暂无自选股，请添加</text>
+  </view>
+</view>

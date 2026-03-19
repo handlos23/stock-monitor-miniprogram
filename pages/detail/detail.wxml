@@ -1,0 +1,53 @@
+<!--pages/detail/detail.wxml-->
+<view class="container">
+  <view class="stock-card">
+    <view class="stock-header">
+      <view>
+        <text class="stock-name">{{stock.name}}</text>
+        <text class="stock-code">{{stock.code}}</text>
+      </view>
+      <view>
+        <text class="stock-price">{{stock.price}}</text>
+        <text class="stock-change {{stock.change >= 0 ? 'up' : 'down'}}">{{stock.changePercent}}</text>
+      </view>
+    </view>
+
+    <view class="stock-info">
+      <view class="info-item">
+        <text class="info-label">今开</text>
+        <text>{{stock.open}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">最高</text>
+        <text>{{stock.high}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">最低</text>
+        <text>{{stock.low}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">昨收</text>
+        <text>{{stock.yesterdayClose}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="threshold-container">
+    <view class="form-item">
+      <text class="form-label">买入阈值</text>
+      <input class="form-input" placeholder="请输入买入价格" type="digit" value="{{buyThreshold}}" bindinput="onBuyThresholdInput"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">卖出阈值</text>
+      <input class="form-input" placeholder="请输入卖出价格" type="digit" value="{{sellThreshold}}" bindinput="onSellThresholdInput"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">备注</text>
+      <textarea class="form-textarea" placeholder="请输入备注信息" value="{{remark}}" bindinput="onRemarkInput"/>
+    </view>
+
+    <button class="btn btn-primary" bindtap="updateStock">保存修改</button>
+  </view>
+</view>
