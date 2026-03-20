@@ -2,9 +2,11 @@
   "pages": [
     "pages/guide/guide",
     "pages/index/index",
+    "pages/trend/trend",
     "pages/add/add",
     "pages/detail/detail",
-    "pages/login/login"
+    "pages/login/login",
+    "pages/agreement/agreement"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -27,10 +29,10 @@
         "text": "股票列表"
       },
       {
-        "pagePath": "pages/add/add",
-        "iconPath": "images/add.png",
-        "selectedIconPath": "images/add-active.png",
-        "text": "添加股票"
+        "pagePath": "pages/trend/trend",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png",
+        "text": "趋势"
       }
     ]
   },

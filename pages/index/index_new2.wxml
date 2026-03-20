@@ -1,0 +1,33 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="header-left">
+      <view class="menu-container">
+        <view class="menu-btn" bindtap="toggleMenu">
+          <text class="menu-icon">⚙️</text>
+        </view>
+        <view class="menu-list {{showMenu ? 'show' : ''}}" wx:if="{{userInfo}}">
+          <view class="menu-item" bindtap="showUserInfo">
+            <text class="menu-item-icon">👤</text>
+            <text class="menu-item-text">个人中心</text>
+          </view>
+          <view class="menu-item" bindtap="subscribeMessage">
+            <text class="menu-item-icon">{{isSubscribed ? '🔔' : '📢'}}</text>
+            <text class="menu-item-text">{{isSubscribed ? '已订阅' : '订阅提醒'}}</text>
+          </view>
+          <view class="menu-item" bindtap="logout">
+            <text class="menu-item-icon">🚪</text>
+            <text class="menu-item-text">退出登录</text>
+          </view>
+        </view>
+      </view>
+      <button class="add-btn" bindtap="addStock">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加</text>
+      </button>
+    </view>
+    <button class="refresh-btn" bindtap="refreshStocks">
+      <text class="refresh-icon">🔄</text>
+    </button>
+  </view>
+</view>

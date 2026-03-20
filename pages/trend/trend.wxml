@@ -1,0 +1,88 @@
+<!--pages/trend/trend.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="header-left">
+      <view class="menu-container">
+        <view class="menu-btn" bindtap="toggleMenu">
+          <text class="menu-icon">⚙</text>
+        </view>
+        <view class="menu-list {{showMenu ? 'show' : ''}}" wx:if="{{userInfo}}">
+          <view class="menu-item" bindtap="showUserInfo">
+            <text class="menu-item-icon">👤</text>
+            <text class="menu-item-text">个人中心</text>
+          </view>
+          <view class="menu-item" bindtap="subscribeMessage">
+            <text class="menu-item-icon">{{isSubscribed ? '🔔' : '📢'}}</text>
+            <text class="menu-item-text">{{isSubscribed ? '已订阅' : '订阅提醒'}}</text>
+          </view>
+          <view class="menu-item" bindtap="logout">
+            <text class="menu-item-icon">🚪</text>
+            <text class="menu-item-text">退出登录</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <button class="action-btn refresh-btn" bindtap="refreshTrends">
+      <text class="btn-icon">🔄</text>
+      <text class="btn-text">刷新</text>
+    </button>
+  </view>
+
+  <scroll-view
+    class="trend-list"
+    wx:if="{{stocks.length > 0}}"
+    scroll-y="true"
+    enable-back-to-top="true">
+
+    <view class="trend-card" wx:for="{{stocks}}" wx:key="_id">
+      <view class="trend-header">
+        <view class="trend-basic">
+          <text class="trend-name">{{item.name}}</text>
+          <text class="trend-code">{{item.code}}</text>
+        </view>
+        <view class="trend-price-container">
+          <text class="trend-price {{item.change >= 0 ? 'up' : 'down'}}">{{item.price}}</text>
+          <text class="trend-change {{item.change >= 0 ? 'up' : 'down'}}">
+            {{item.change >= 0 ? '+' : ''}}{{item.changePercent}}
+          </text>
+        </view>
+      </view>
+
+      <view class="trend-chart-container">
+        <canvas 
+          canvas-id="trendChart{{index}}" 
+          id="trendChart{{index}}"
+          class="trend-chart">
+        </canvas>
+      </view>
+
+      <view class="trend-info">
+        <view class="info-row">
+          <view class="info-item">
+            <text class="info-label">今开</text>
+            <text class="info-value {{item.open >= item.yesterdayClose ? 'up' : 'down'}}">{{item.open}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">最高</text>
+            <text class="info-value {{item.high >= item.yesterdayClose ? 'up' : 'down'}}">{{item.high}}</text>
+          </view>
+        </view>
+        <view class="info-row">
+          <view class="info-item">
+            <text class="info-label">最低</text>
+            <text class="info-value {{item.low >= item.yesterdayClose ? 'up' : 'down'}}">{{item.low}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">昨收</text>
+            <text class="info-value">{{item.yesterdayClose}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">📊</text>
+    <text class="empty-text">暂无自选股，请添加</text>
+  </view>
+</view>

@@ -1,0 +1,9 @@
+<!--pages/agreement/agreement.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">{{title}}</text>
+  </view>
+  <view class="content">
+    <rich-text nodes="{{content}}"></rich-text>
+  </view>
+</view>

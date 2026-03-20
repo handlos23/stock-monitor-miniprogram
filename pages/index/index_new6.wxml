@@ -21,10 +21,6 @@
           </view>
         </view>
       </view>
-      <button class="action-btn add-btn" bindtap="toggleAddForm">
-        <text class="btn-icon">+</text>
-        <text class="btn-text">添加</text>
-      </button>
     </view>
     <button class="action-btn refresh-btn" bindtap="refreshStocks">
       <text class="btn-icon">🔄</text>
@@ -104,44 +100,5 @@
   <view class="empty-state" wx:else>
     <text class="empty-icon">📊</text>
     <text class="empty-text">暂无自选股，请添加</text>
-  </view>
-
-  <!-- 添加股票表单 -->
-  <view class="add-form-container {{showAddForm ? 'show' : ''}}" wx:if="{{userInfo}}">
-    <view class="form-mask" bindtap="toggleAddForm"></view>
-    <view class="form-content">
-      <view class="form-header">
-        <text class="form-title">添加股票</text>
-        <text class="form-close" bindtap="toggleAddForm">✕</text>
-      </view>
-      <view class="form-body">
-        <view class="form-item">
-          <text class="form-label">股票代码</text>
-          <input class="form-input" placeholder="请输入6位股票代码" type="number" maxlength="6" bindinput="onCodeInput" value="{{code}}"/>
-        </view>
-
-        <view class="form-item">
-          <text class="form-label">股票名称</text>
-          <input class="form-input" placeholder="保存时自动获取" disabled value="{{name}}"/>
-        </view>
-
-        <view class="form-item">
-          <text class="form-label">买入阈值（可选）</text>
-          <input class="form-input" placeholder="请输入买入价格" type="digit" bindinput="onBuyThresholdInput" value="{{buyThreshold}}"/>
-        </view>
-
-        <view class="form-item">
-          <text class="form-label">卖出阈值（可选）</text>
-          <input class="form-input" placeholder="请输入卖出价格" type="digit" bindinput="onSellThresholdInput" value="{{sellThreshold}}"/>
-        </view>
-
-        <view class="form-item">
-          <text class="form-label">备注（可选）</text>
-          <textarea class="form-textarea" placeholder="请输入备注信息" bindinput="onRemarkInput" value="{{remark}}"/>
-        </view>
-
-        <button class="btn btn-primary" bindtap="addStock">添加股票</button>
-      </view>
-    </view>
   </view>
 </view>

@@ -11,7 +11,15 @@ Page({
     currentPage: 1,
     userInfo: null,
     isSubscribed: false,
-    isSubscribing: false
+    isSubscribing: false,
+    showMenu: false,
+    showAddForm: false,
+    code: '',
+    name: '',
+    buyThreshold: '',
+    sellThreshold: '',
+    remark: '',
+    searchResult: null
   },
 
   onLoad: function (options) {
@@ -22,6 +30,11 @@ Page({
       })
       this.loadStocks()
       this.checkSubscriptionStatus()
+    } else {
+      // 未登录时跳转到登录页面
+      wx.navigateTo({
+        url: '/pages/login/login'
+      })
     }
   },
 
@@ -173,17 +186,22 @@ Page({
               // 检查是否达到阈值
               this.checkThreshold(stock, price)
 
-              return {
-                ...stock,
-                name,
-                price,
-                yesterdayClose,
-                open,
-                high,
-                low,
-                change,
-                changePercent
+              var newStock = {
+                name: name,
+                price: price,
+                yesterdayClose: yesterdayClose,
+                open: open,
+                high: high,
+                low: low,
+                change: change,
+                changePercent: changePercent
               }
+              for (var key in stock) {
+                if (newStock[key] === undefined) {
+                  newStock[key] = stock[key]
+                }
+              }
+              return newStock
             }
           }
           return stock
@@ -191,11 +209,14 @@ Page({
 
         if (isLoadMore) {
           // 更新对应位置的股票数据
-          const stocks = [...this.data.stocks]
-          const startIndex = stocks.length - newStocks.length
-          updatedStocks.forEach((stock, index) => {
-            stocks[startIndex + index] = stock
-          })
+          var stocks = []
+          for (var i = 0; i < this.data.stocks.length; i++) {
+            stocks.push(this.data.stocks[i])
+          }
+          var startIndex = stocks.length - newStocks.length
+          for (var j = 0; j < updatedStocks.length; j++) {
+            stocks[startIndex + j] = updatedStocks[j]
+          }
           this.setData({ stocks, loading: false })
         } else {
           this.setData({ stocks: updatedStocks, loading: false })
@@ -236,27 +257,231 @@ Page({
     }
   },
 
+  // 切换菜单显示
+  toggleMenu: function() {
+    this.setData({
+      showMenu: !this.data.showMenu
+    })
+  },
+
+  // 切换添加表单显示
+  toggleAddForm: function() {
+    this.setData({
+      showAddForm: !this.data.showAddForm
+    })
+  },
+
+  // 输入股票代码
+  onCodeInput: function(e) {
+    this.setData({
+      code: e.detail.value
+    })
+  },
+
+  // 输入买入阈值
+  onBuyThresholdInput: function(e) {
+    this.setData({
+      buyThreshold: e.detail.value
+    })
+  },
+
+  // 输入卖出阈值
+  onSellThresholdInput: function(e) {
+    this.setData({
+      sellThreshold: e.detail.value
+    })
+  },
+
+  // 输入备注
+  onRemarkInput: function(e) {
+    this.setData({
+      remark: e.detail.value
+    })
+  },
+
+  // 添加股票
+  addStock: function() {
+    var that = this
+    var code = this.data.code
+    var buyThreshold = this.data.buyThreshold
+    var sellThreshold = this.data.sellThreshold
+    var remark = this.data.remark
+
+    // 表单验证 - 只校验股票代码必填
+    if (!code || code.length !== 6) {
+      wx.showToast({
+        title: '请输入6位股票代码',
+        icon: 'none'
+      })
+      return
+    }
+
+    wx.showLoading({
+      title: '添加中...'
+    })
+
+    // 构建腾讯股票API所需的代码格式
+    var apiCode = code
+    if (code.startsWith('6')) {
+      // 上海股票代码格式
+      apiCode = 'sh' + code
+    } else {
+      // 深圳股票代码格式
+      apiCode = 'sz' + code
+    }
+
+    // 调用云函数获取股票信息
+    wx.cloud.callFunction({
+      name: 'httpRequest',
+      data: {
+        url: 'http://qt.gtimg.cn/q=' + apiCode
+      },
+      success: function(res) {
+        if (!res.result || !res.result.success) {
+          wx.hideLoading()
+          wx.showToast({
+            title: '未找到该股票',
+            icon: 'none'
+          })
+          return
+        }
+
+        var quotes = res.result.data
+        var quotePattern = new RegExp('v_' + apiCode + '="([^"]*)"')
+        var match = quotes.match(quotePattern)
+
+        if (!match || !match[1]) {
+          wx.hideLoading()
+          wx.showToast({
+            title: '未找到该股票',
+            icon: 'none'
+          })
+          return
+        }
+
+        var data = match[1].split('~')
+        if (data.length <= 3) {
+          wx.hideLoading()
+          wx.showToast({
+            title: '未找到该股票',
+            icon: 'none'
+          })
+          return
+        }
+
+        // 处理股票名称编码问题
+        var name = data[1]
+        // 清理可能的乱码字符
+        if (name) {
+          // 手动清理乱码字符
+          var cleanName = ''
+          for (var i = 0; i < name.length; i++) {
+            var charCode = name.charCodeAt(i)
+            // ASCII字符或中文字符
+            if ((charCode >= 0 && charCode <= 127) || (charCode >= 0x4e00 && charCode <= 0x9fa5)) {
+              cleanName += name[i]
+            }
+          }
+          name = cleanName
+        }
+
+        // 检查是否已添加该股票
+        var openid = app.getOpenid()
+        db.collection('stocks').where({
+          code: code,
+          _openid: openid
+        }).count({
+          success: function(res) {
+            if (res.total > 0) {
+              wx.hideLoading()
+              wx.showToast({
+                title: '该股票已添加',
+                icon: 'none'
+              })
+              return
+            }
+
+            // 添加股票到云数据库
+            db.collection('stocks').add({
+              data: {
+                code: code,
+                name: name,
+                buyThreshold: buyThreshold || '',
+                sellThreshold: sellThreshold || '',
+                remark: remark || '',
+                createTime: db.serverDate(),
+                updateTime: db.serverDate()
+              },
+              success: function() {
+                wx.hideLoading()
+                wx.showToast({
+                  title: '添加成功',
+                  icon: 'success'
+                })
+
+                // 清空表单并关闭
+                that.setData({
+                  code: '',
+                  name: '',
+                  buyThreshold: '',
+                  sellThreshold: '',
+                  remark: '',
+                  searchResult: null,
+                  showAddForm: false
+                })
+
+                // 刷新股票列表
+                that.loadStocks()
+              },
+              fail: function(err) {
+                console.error('[数据库] [添加记录] 失败：', err)
+                wx.hideLoading()
+                wx.showToast({
+                  title: '添加失败',
+                  icon: 'none'
+                })
+              }
+            })
+          },
+          fail: function(err) {
+            console.error('[数据库] [查询记录] 失败：', err)
+            wx.hideLoading()
+            wx.showToast({
+              title: '添加失败',
+              icon: 'none'
+            })
+          }
+        })
+      },
+      fail: function(err) {
+        console.error('[股票API] 查询失败：', err)
+        wx.hideLoading()
+        wx.showToast({
+          title: '查询失败',
+          icon: 'none'
+        })
+      }
+    })
+  },
+
   // 显示用户信息
   showUserInfo: function() {
-    const that = this
-    wx.showActionSheet({
-      itemList: ['个人中心', '退出登录'],
-      success: function(res) {
-        if (res.tapIndex === 0) {
-          // 跳转到登录页面
-          wx.navigateTo({
-            url: '/pages/login/login'
-          })
-        } else if (res.tapIndex === 1) {
-          // 退出登录
-          that.logout()
-        }
-      }
+    // 关闭菜单
+    this.setData({
+      showMenu: false
+    })
+    // 跳转到登录页面
+    wx.navigateTo({
+      url: '/pages/login/login'
     })
   },
 
   // 退出登录
   logout: function() {
+    // 关闭菜单
+    this.setData({
+      showMenu: false
+    })
     const that = this
     wx.showModal({
       title: '确认退出',
@@ -345,6 +570,11 @@ Page({
 
   // 订阅消息
   subscribeMessage: function() {
+    // 关闭菜单
+    this.setData({
+      showMenu: false
+    })
+
     // 防止重复点击
     if (this.data.isSubscribing) {
       console.log('订阅消息正在处理中，请稍候')
