@@ -212,22 +212,17 @@ Page({
               console.log('股票', stock.code, '开始解析K线数据')
               const data = JSON.parse(res.result.data)
               console.log('股票', stock.code, '原始K线数据:', data)
-              if (data && data.data) {
-                console.log('股票', stock.code, 'data.data的键:', Object.keys(data.data))
-                if (data.data[apiCode]) {
-                  const klineData = data.data[apiCode].day
-                  console.log('股票', stock.code, 'K线数据类型:', typeof klineData, '是否为数组:', Array.isArray(klineData))
-                  if (klineData && Array.isArray(klineData) && klineData.length > 0) {
-                    stocks[index].historyData = klineData
-                    console.log('股票', stock.code, '历史数据:', klineData)
-                  } else {
-                    console.warn('股票', stock.code, 'K线数据格式不正确, klineData:', klineData)
-                  }
+              if (data && data.data && data.data[apiCode]) {
+                const qfqday = data.data[apiCode].qfqday
+                console.log('股票', stock.code, 'qfqday数据:', qfqday)
+                if (qfqday && Array.isArray(qfqday) && qfqday.length > 0) {
+                  stocks[index].historyData = qfqday
+                  console.log('股票', stock.code, '历史数据:', qfqday)
                 } else {
-                  console.warn('股票', stock.code, '未找到K线数据, data.data:', data.data)
+                  console.warn('股票', stock.code, 'qfqday数据格式不正确, qfqday:', qfqday)
                 }
               } else {
-                console.warn('股票', stock.code, '未找到data.data')
+                console.warn('股票', stock.code, '未找到K线数据, data.data:', data.data)
               }
             } catch (e) {
               console.error('解析K线数据失败', e)
@@ -296,15 +291,16 @@ Page({
       if (stock.historyData && stock.historyData.length > 0) {
         // 使用真实的历史K线数据
         stock.historyData.slice(-5).forEach(item => {
-          if (item && item.length >= 4) {
-            // 第4个参数（索引3）是收盘价
-            const closePrice = parseFloat(item[3])
+          if (item && item.length >= 3) {
+            // 第3个参数（索引2）是收盘价
+            const closePrice = parseFloat(item[2])
             if (!isNaN(closePrice)) {
               prices.push(closePrice)
-              const date = new Date(item[0])
-              if (!isNaN(date.getTime())) {
-                const month = date.getMonth() + 1
-                const day = date.getDate()
+              // 第1个参数（索引0）是日期，格式为YYYY-MM-DD
+              const dateStr = item[0]
+              if (dateStr && dateStr.length >= 10) {
+                const month = parseInt(dateStr.substring(5, 7))
+                const day = parseInt(dateStr.substring(8, 10))
                 dates.push(`${month}/${day}`)
               }
             }
