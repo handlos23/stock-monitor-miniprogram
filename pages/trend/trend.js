@@ -13,7 +13,9 @@ Page({
 
   onLoad: function (options) {
     this.checkLogin()
-    this.loadStocks()
+    if (this.data.userInfo) {
+      this.loadStocks()
+    }
   },
 
   onShow: function() {

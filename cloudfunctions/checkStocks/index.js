@@ -205,15 +205,23 @@ exports.main = async (event, context) => {
       
       console.log('[允许发送] 用户已订阅，继续发送：', notification.openid)
 
-      try {
-        // 准备消息数据
-        const stockName = notification.stockName.substring(0, 10) // 限制长度
-        const stockCode = notification.stockCode
-        const priceStr = notification.price.toFixed(2)
-        // 提取涨跌幅数字（去掉%符号），判断正负
-        const changePercentNum = parseFloat(notification.changePercent)
-        const typeText = changePercentNum >= 0 ? `上涨${changePercentNum}%` : `下跌${Math.abs(changePercentNum)}%`
-        const alertText = notification.type === 'buy' ? '买入提醒' : '卖出提醒'
+      // 准备消息数据 - 移到 try 块外部，以便在 catch 块中也能访问
+      const stockName = notification.stockName.substring(0, 10) // 限制长度
+      const stockCode = notification.stockCode
+      const priceStr = notification.price.toFixed(2)
+            
+      // 提取涨跌幅数字（去掉%符号），判断正负
+      const changePercentNum = parseFloat(notification.changePercent)
+      console.log('[消息数据] 原始涨跌幅：', notification.changePercent, '解析后：', changePercentNum)
+            
+      // 修复 short_thing15 字段格式
+      // short_thing 类型最多 10 个字符，不能包含 % 符号
+      // 格式：+12.34 或 -12.34
+      const changePercentText = changePercentNum.toFixed(2)
+      const safeTypeText = changePercentText.substring(0, 10)
+      console.log('[消息数据] typeText 最终值：', safeTypeText, '长度：', safeTypeText.length)
+            
+      const alertText = notification.type === 'buy' ? '买入提醒' : '卖出提醒'
         const timeStr = new Date().toLocaleString('zh-CN', {
           hour12: false,
           year: 'numeric',
@@ -236,7 +244,7 @@ exports.main = async (event, context) => {
               value: priceStr.substring(0, 10) // 当前价格，amount 类型最多 10 字符
             },
             short_thing15: {
-              value: typeText.substring(0, 10) // 涨跌幅，short_thing 类型最多 10 字符
+              value: safeTypeText // 涨跌幅，格式：+3.56% 或 -2.34%，最多 10 字符
             },
             thing13: {
               value: alertText.substring(0, 20) // 预警类型，thing 类型最多 20 字符
@@ -247,6 +255,7 @@ exports.main = async (event, context) => {
           }
         }
 
+      try {
         console.log('[checkStocks] 发送消息数据：', JSON.stringify(messageData, null, 2))
         console.log('[checkStocks] 准备发送订阅消息给用户：', notification.openid)
 

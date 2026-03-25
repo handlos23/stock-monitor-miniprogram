@@ -19,7 +19,8 @@ Page({
     buyThreshold: '',
     sellThreshold: '',
     remark: '',
-    searchResult: null
+    searchResult: null,
+    autoRefreshTimer: null // 自动刷新定时器
   },
 
   onLoad: function (options) {
@@ -30,12 +31,20 @@ Page({
       })
       this.loadStocks()
       this.checkSubscriptionStatus()
+      // 启动自动刷新（每 10 秒调用一次云函数）
+      this.startAutoRefresh()
     } else {
-      // 未登录时跳转到登录页面
-      wx.navigateTo({
-        url: '/pages/login/login'
+      // 未登录时显示引导，不强制跳转
+      this.setData({
+        userInfo: null
       })
+      // 可以显示一些示例数据或引导用户登录
     }
+  },
+
+  onUnload: function () {
+    // 页面卸载时清除定时器
+    this.stopAutoRefresh()
   },
 
   onShow: function () {
@@ -705,5 +714,61 @@ Page({
     }).catch(err => {
       console.error('保存订阅状态失败：', err)
     })
+  },
+
+  // 启动自动刷新（每 10 秒调用一次云函数）
+  startAutoRefresh: function() {
+    // 清除之前的定时器（如果有）
+    this.stopAutoRefresh()
+    
+    console.log('================ [自动刷新] 启动定时器，每 10 秒执行一次 ================')
+    console.log('[自动刷新] 当前时间：', new Date().toLocaleString('zh-CN'))
+    
+    const timer = setInterval(() => {
+      const now = new Date().toLocaleString('zh-CN')
+      console.log('================ [自动刷新] 开始检查股票阈值 -', now, ' ================')
+      
+      // 调用云函数检查股票阈值并发送推送消息
+      wx.cloud.callFunction({
+        name: 'checkStocks',
+        success: res => {
+          console.log('[自动刷新] 云函数执行结果：', res.result)
+          if (res.result && res.result.success) {
+            const notificationCount = res.result.notifications || 0
+            console.log('[自动刷新] 检测到', notificationCount, '条通知')
+            if (notificationCount > 0) {
+              console.log('[自动刷新] 已发送', notificationCount, '条通知')
+              // 不在这里显示 Toast，避免频繁打扰用户
+            } else {
+              console.log('[自动刷新] 没有股票达到阈值，继续监控中...')
+            }
+          }
+        },
+        fail: err => {
+          console.error('[自动刷新] 云函数执行失败：', err)
+        },
+        complete: () => {
+          console.log('[自动刷新] 本次检查完成，下次检查将在 10 秒后...\n')
+        }
+      })
+    }, 10000) // 10 秒 = 10000 毫秒
+    
+    this.setData({
+      autoRefreshTimer: timer
+    })
+    
+    console.log('[自动刷新] 定时器 ID:', timer)
+    console.log('[自动刷新] 请保持小程序在前台运行\n')
+  },
+
+  // 停止自动刷新
+  stopAutoRefresh: function() {
+    if (this.data.autoRefreshTimer) {
+      clearInterval(this.data.autoRefreshTimer)
+      this.setData({
+        autoRefreshTimer: null
+      })
+      console.log('[自动刷新] 已停止定时器')
+    }
   }
 })

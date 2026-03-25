@@ -3,7 +3,7 @@
     {
       "name": "stockMonitorTimer",
       "type": "timer",
-      "config": "*/10 * * * *"
+      "config": "* * * * *"
     }
   ]
 }
