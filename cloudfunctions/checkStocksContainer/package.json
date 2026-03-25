@@ -1,0 +1,9 @@
+{
+  "name": "checkStocksContainer",
+  "version": "1.0.0",
+  "description": "股票监控容器服务 - 每 10 秒检查一次",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -56,14 +56,24 @@ exports.main = async (event, context) => {
     console.log('[股票查询] 开始查询设置了阈值的股票...')
     let stocksRes
     try {
-      stocksRes = await db.collection('stocks').where({
-        $or: [
-          { buyThreshold: _.neq('').and(_.neq(null)) },
-          { sellThreshold: _.neq('').and(_.neq(null)) }
-        ]
-      }).get()
-      console.log('[股票查询] 查询成功，股票数量：', stocksRes.data.length)
-      console.log('[股票查询] 股票详情：', JSON.stringify(stocksRes.data, null, 2))
+      // 先获取所有股票
+      const allStocksRes = await db.collection('stocks').get()
+      console.log('[股票查询] 获取所有股票，总数量：', allStocksRes.data.length)
+      
+      // 过滤出设置了阈值的股票（阈值不为空字符串且不为 null/undefined）
+      const filteredStocks = allStocksRes.data.filter(stock => {
+        const hasBuyThreshold = stock.buyThreshold !== '' && stock.buyThreshold != null && stock.buyThreshold !== undefined
+        const hasSellThreshold = stock.sellThreshold !== '' && stock.sellThreshold != null && stock.sellThreshold !== undefined
+        return hasBuyThreshold || hasSellThreshold
+      })
+      
+      console.log('[股票查询] 过滤后设置了阈值的股票数量：', filteredStocks.length)
+      console.log('[股票查询] 股票详情：', JSON.stringify(filteredStocks, null, 2))
+      
+      // 手动构造返回结果
+      stocksRes = {
+        data: filteredStocks
+      }
     } catch (err) {
       console.error('[股票查询] 查询失败：', err)
       throw err
@@ -144,6 +154,7 @@ exports.main = async (event, context) => {
                 stockName: stock.name,
                 stockCode: stock.code,
                 price,
+                changePercent,
                 type: 'buy',
                 threshold: stock.buyThreshold,
                 message: `${stock.name}(${stock.code}) 价格已低于买入阈值 ${stock.buyThreshold}，当前价格：${price}`
@@ -158,6 +169,7 @@ exports.main = async (event, context) => {
                 stockName: stock.name,
                 stockCode: stock.code,
                 price,
+                changePercent,
                 type: 'sell',
                 threshold: stock.sellThreshold,
                 message: `${stock.name}(${stock.code}) 价格已高于卖出阈值 ${stock.sellThreshold}，当前价格：${price}`
@@ -198,7 +210,9 @@ exports.main = async (event, context) => {
         const stockName = notification.stockName.substring(0, 10) // 限制长度
         const stockCode = notification.stockCode
         const priceStr = notification.price.toFixed(2)
-        const typeText = notification.type === 'buy' ? '下跌' : '上涨'
+        // 提取涨跌幅数字（去掉%符号），判断正负
+        const changePercentNum = parseFloat(notification.changePercent)
+        const typeText = changePercentNum >= 0 ? `上涨${changePercentNum}%` : `下跌${Math.abs(changePercentNum)}%`
         const alertText = notification.type === 'buy' ? '买入提醒' : '卖出提醒'
         const timeStr = new Date().toLocaleString('zh-CN', {
           hour12: false,

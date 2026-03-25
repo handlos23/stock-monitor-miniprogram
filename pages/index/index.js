@@ -506,6 +506,29 @@ Page({
       hasMore: true
     })
     this.loadStocks()
+    
+    // 调用云函数检查股票阈值并发送推送消息
+    wx.cloud.callFunction({
+      name: 'checkStocks',
+      success: res => {
+        console.log('[刷新时检查阈值] 云函数执行结果：', res.result)
+        if (res.result && res.result.success) {
+          const notificationCount = res.result.notifications || 0
+          if (notificationCount > 0) {
+            wx.showToast({
+              title: `已发送 ${notificationCount} 条提醒`,
+              icon: 'success',
+              duration: 2000
+            })
+          }
+        }
+      },
+      fail: err => {
+        console.error('[刷新时检查阈值] 云函数执行失败：', err)
+        // 不显示错误提示，避免影响刷新体验
+      }
+    })
+    
     wx.showToast({
       title: '刷新成功',
       icon: 'success'
